@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>game</title>
+    <style>
+        *{
+            margin: 0;padding: 0;box-sizing: border-box;
+        }
+        body{
+            width: 100%;
+            height: 100vh;
+            background-image: url(img/dice.jpg);
+            background-repeat: no-repeat;
+            background-size: 100% 100%;
+        }
+        .start{
+            width: 300px;
+            height: 250px;
+            background-color: rgba(0, 0, 0, 0.512);
+            margin: 0px auto;
+            border:5px solid white;
+            position: relative;
+            top: 150px;
+            transition: 1s;
+            z-index: 9;
+        }
+        .start>input{
+            width: 90%;
+            height: 40px;
+            margin: 20px 5%;
+            padding: 5px;
+
+        }
+        .start>span{
+            width: 30%;
+            height: 50px;
+            background-color: transparent;
+            font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+            text-transform: capitalize;
+            color: white;
+            margin: 10px 35%;
+            line-height: 50px;
+            border: 2px solid white;
+            padding: 10px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .start>span:hover{
+            background-color: white;
+            color: black;
+
+        }
+
+        .game{
+            width: 60%;
+            height: 300px;
+            background-color: rgba(0, 0, 0, 0.512);
+            border: 10px solid white;
+            margin: 0px auto;
+            opacity: 0;
+            transition: .4s;
+            position: relative;
+            
+        }
+        .game>div{
+            float: left;
+            width: 50%;
+            height: 100%;
+            border-left: 3px solid white;
+            /* padding: 40px; */
+            position: relative;
+        }
+        .game>div>*{
+            position: absolute;
+        }
+        .game>div>span{
+            top: 0;
+            left: 0;
+            padding: 5px 15px;
+            background-color: white;
+            color: black;
+        }
+        .game>div>aside{
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.667);
+        }
+        .dice{
+            width: 50px;
+            height: 50px;
+            background-color: white;
+            border-radius: 5px;
+            line-height: 50px;
+             top: 30%;
+            left: calc(50% - 25px);
+            text-align: center;
+            transition: .4s;
+            cursor: pointer;
+        }
+        .dice:hover{
+            transform: scale(1.2);
+        } 
+
+        .game>div>div:nth-of-type(2){
+            width: 100%;
+            height: 40px;
+            left: 0;
+            bottom: 0;
+            background-color: white;
+            color: black;
+            font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+            text-transform: capitalize;
+            text-align: center;
+            line-height: 40px;
+
+        }
+
+    </style>
+</head>
+<body>
+    <div class="start">
+        <input type="text" id="in1" placeholder="Player-1">
+        <input type="text" id="in2" placeholder="Player-2">
+        <span onclick="_start()">Let's Go</span>
+    </div>
+    <div class="game">
+        <div>
+            <span></span>
+            <div class="dice" onclick="_dice1()">0</div>
+            <div>Your sum is : <span id="sum1">0</span></div>
+            <aside></aside>
+        </div>
+        <div>
+            <span></span>
+            <div class="dice" onclick="_dice2()">0</div>
+            <div>Your sum is : <span id="sum2">0</span></div>
+            <aside></aside>
+        </div>
+    </div>
+
+    <script>
+        var _player1="";
+        var _player2="";
+        function _start(){
+            var i=0;
+            _player1+=document.querySelector(".start>input:nth-of-type(1)").value;
+            _player2+=document.querySelector(".start>input:nth-of-type(2)").value;
+            console.log(_player1 + _player2);
+            if(_player1=="" || _player1==null){
+                alert("player 1 is empty , pls fill out the field");
+                i++;
+            }
+            if(_player2=="" || _player2==null){
+                alert("player 2 is empty , pls fill out the field");
+                i++
+            }
+            console.log(i);
+            if(i==0){
+                document.querySelector(".start").style.top="-500px";
+                document.querySelector(".game>div:nth-of-type(1)>span").innerHTML=_player1;
+                document.querySelector(".game>div:nth-of-type(2)>span").innerHTML=_player2;
+                document.querySelector(".game").style.opacity="1";
+                document.querySelector(".game").style.top="-100px";
+
+                var num=Math.floor(Math.random()*2);
+                if(num==0){
+                    document.querySelector(".game>div:nth-of-type(1)>aside").style.display="none";
+
+                }else{
+                    document.querySelector(".game>div:nth-of-type(2)>aside").style.display="none";
+                }
+
+
+            }
+        }
+
+        var sum1=0;
+        var sum2=0;
+        function _dice1(){
+                    var rnd=Math.floor(Math.random()*6)+1;
+                    // console.log(rnd);
+                    document.querySelector(".game>div:nth-of-type(1)>.dice").innerHTML=rnd;
+                    sum1+=rnd;
+                    document.getElementById("sum1").innerHTML=sum1;
+                    if(rnd!=7){
+                        document.querySelector(".game>div:nth-of-type(1)>aside").style.display="block";
+                        document.querySelector(".game>div:nth-of-type(2)>aside").style.display="none";
+                    }
+                    if(sum1>=30){
+                        alert("Congratulation! "+_player1+" win");
+                    }
+                }
+                function _dice2(){
+                    var rnd=Math.floor(Math.random()*6)+1;
+                    document.querySelector(".game>div:nth-of-type(2)>.dice").innerHTML=rnd;
+                    sum2+=rnd;
+                    document.getElementById("sum2").innerHTML=sum2;
+                    if(rnd!=7){
+                        document.querySelector(".game>div:nth-of-type(1)>aside").style.display="none";
+                        document.querySelector(".game>div:nth-of-type(2)>aside").style.display="block";
+                    }
+                    if(sum2>=30){
+                        alert("Congratulation! "+_player2+" win");
+                    }
+                }
+
+
+
+    </script>
+</body>
+</html>
